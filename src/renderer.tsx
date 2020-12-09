@@ -1,7 +1,7 @@
 //import './server/server'
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.sass';
 import 'antd/dist/antd.css';
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'

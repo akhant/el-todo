@@ -24,7 +24,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "el_todo_type_webp"
+            "name": "el_todo"
           }
         },
         {
@@ -76,13 +76,16 @@
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
-    "css-loader": "^4.2.1",
+    "css-loader": "^5.0.1",
     "electron": "11.0.3",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "^2.20.0",
     "fork-ts-checker-webpack-plugin": "^5.0.14",
     "node-loader": "^1.0.1",
-    "style-loader": "^1.2.1",
+    "node-sass": "^5.0.0",
+    "sass": "^1.30.0",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0",
     "ts-loader": "^8.0.2",
     "typescript": "^4.0.2"
   },
