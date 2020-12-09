@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { DatePicker, Input, Button, List } from 'antd';
 import moment from 'moment';
-import { addTodo, removeTodo, doneTodo, getTodos } from '../redux/actions';
+import { addTodo, getTodos } from '../redux/actions';
 import { connect } from 'react-redux';
 import { DATE_FORMAT } from '../redux/const';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+
+import CustomListItem from './CustomListItem';
 
 export interface IDataItem {
   text: string;
@@ -23,9 +24,9 @@ const App: React.FC<IAppProps> = ({ data, addTodo, getTodos }) => {
   const [todo, setTodo] = useState('');
   const [date, setDate] = useState(moment());
 
-  const handleChangeDate = (data: any) => {
-    setDate(data);
-    console.log(data.format(DATE_FORMAT));
+  const handleChangeDate = (newDate: any) => {
+    setDate(newDate);
+    getTodos(newDate.format(DATE_FORMAT));
   };
 
   const handleInput = (e: any) => {
@@ -42,44 +43,37 @@ const App: React.FC<IAppProps> = ({ data, addTodo, getTodos }) => {
     setTodo('');
   };
 
-  const handleClickDone = () => {
-   
-  };
-
-  const handleClickRemove = () => {
- 
-  };
+  const handleClickGetAllDoneTodos = () => {};
 
   useEffect(() => {
-    getTodos();
+    getTodos(date.format(DATE_FORMAT));
   }, []);
 
   return (
-    <div>
+    <div className='main-page'>
       <DatePicker
         value={date}
         defaultValue={moment()}
         onChange={handleChangeDate}
       />
-      <Input onPressEnter={handleAddTodo} value={todo} onChange={handleInput} />
+      <Input
+        placeholder='What will I do?'
+        onPressEnter={handleAddTodo}
+        value={todo}
+        onChange={handleInput}
+      />
       <List
+        className='list'
         size='large'
         bordered
         dataSource={data}
         renderItem={(item) => (
           <List.Item>
-            <div>
-              {item.text}
-              <Button onClick={handleClickDone}>
-                <CheckOutlined />
-              </Button>
-              <Button onClick={handleClickRemove}>
-                <CloseOutlined />
-              </Button>
-            </div>
+            <CustomListItem item={item} />
           </List.Item>
         )}
       />
+      <Button onClick={handleClickGetAllDoneTodos}>Get all not done</Button>
     </div>
   );
 };

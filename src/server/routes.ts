@@ -3,7 +3,11 @@ import db from './db';
 
 const router = express.Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
+
+  const {date} = req.body
+
+  console.log("date",date)
   const query1 = `
     CREATE TABLE IF NOT EXISTS todos (
         id SERIAL,
@@ -13,19 +17,44 @@ router.get('/', async (req: Request, res: Response) => {
     )
     `;
   const query2 = `
-    SELECT * FROM todos;
+    SELECT * FROM todos WHERE date='${date}'
     `;
   try {
     const resp1 = await db.query(query1);
     const resp2 = await db.query(query2);
-    console.log('db get resp2', resp2);
+    console.log('db get resp2', resp2.rows);
     res.send(resp2.rows);
   } catch (err) {
     console.log(err);
   }
+});
 
+router.get('/allnotdone', async (req: Request, res: Response) => {
 
-  
+  const query = `
+    SELECT * FROM todos WHERE done='false'
+    `;
+  try {
+    const resp = await db.query(query);
+    console.log('db get resp2', resp.rows);
+    res.send(resp.rows);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get('/all', async (req: Request, res: Response) => {
+
+  const query = `
+    SELECT * FROM todos
+    `;
+  try {
+    const resp = await db.query(query);
+    console.log('db get resp2', resp.rows);
+    res.send(resp.rows);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.post('/add', async (req: Request, res: Response) => {
@@ -47,6 +76,38 @@ router.post('/add', async (req: Request, res: Response) => {
       });
   } catch (err) {
     console.log(err.stack);
+  }
+  
+});
+
+router.post('/remove', async (req: Request, res: Response) => {
+  const { id } = req.body;
+
+  const query = `
+    DELETE FROM todos 
+    WHERE id='${id}' RETURNING id
+    `;
+  try {
+    const resp = await db.query(query);
+    console.log("resp", resp.rows)
+    res.send(resp.rows[0]);
+  } catch (err) {
+    console.log(err);
+  }
+  
+});
+
+router.post('/done', async (req: Request, res: Response) => {
+  const { id } = req.body;
+
+  const query = `
+    UPDATE todos SET done='true' WHERE id='${id}' RETURNING id
+    `;
+  try {
+    const resp = await db.query(query);
+    res.send(resp.rows[0]);
+  } catch (err) {
+    console.log(err);
   }
   
 });

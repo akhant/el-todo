@@ -15,8 +15,8 @@ export const addTodo = (item: IDataItem) => async (dispatch: Dispatch) => {
   });
 };
 
-export const getTodos = () => async (dispatch: Dispatch) => {
-  const res = await axios.get(`${api}/`);
+export const getTodos = (date: string) => async (dispatch: Dispatch) => {
+  const res = await axios.post(`${api}/`, { date });
 
   dispatch({
     type: GET_TODOS,
@@ -24,8 +24,8 @@ export const getTodos = () => async (dispatch: Dispatch) => {
   });
 };
 
-export const removeTodo = (item: IDataItem) => async (dispatch: Dispatch) => {
-  const res = await axios.post(`${api}/add`, item);
+export const removeTodo = (id: number) => async (dispatch: Dispatch) => {
+  const res = await axios.post(`${api}/remove`, { id });
 
   dispatch({
     type: REMOVE_TODO,
@@ -33,8 +33,8 @@ export const removeTodo = (item: IDataItem) => async (dispatch: Dispatch) => {
   });
 };
 
-export const doneTodo = (item: IDataItem) => async (dispatch: Dispatch) => {
-  const res = await axios.post(`${api}/add`, item);
+export const doneTodo = (id: number) => async (dispatch: Dispatch) => {
+  const res = await axios.post(`${api}/done`, { id });
 
   dispatch({
     type: DONE_TODO,
