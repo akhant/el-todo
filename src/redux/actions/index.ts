@@ -1,4 +1,4 @@
-import { GET_TODOS } from './../const';
+import { GET_TODOS, GET_ALL_NOT_DONE_TODOS } from './../const';
 import { IDataItem } from './../../components/App';
 import { Dispatch } from 'redux';
 import { ADD_TODO, REMOVE_TODO, DONE_TODO } from '../const';
@@ -24,6 +24,15 @@ export const getTodos = (date: string) => async (dispatch: Dispatch) => {
   });
 };
 
+export const getAllNotDoneTodos = () => async (dispatch: Dispatch) => {
+  const res = await axios.get(`${api}/allnotdone`);
+
+  dispatch({
+    type: GET_ALL_NOT_DONE_TODOS,
+    payload: res.data,
+  });
+};
+
 export const removeTodo = (id: number) => async (dispatch: Dispatch) => {
   const res = await axios.post(`${api}/remove`, { id });
 
@@ -33,11 +42,13 @@ export const removeTodo = (id: number) => async (dispatch: Dispatch) => {
   });
 };
 
-export const doneTodo = (id: number) => async (dispatch: Dispatch) => {
-  const res = await axios.post(`${api}/done`, { id });
-
+export const doneTodo = (id: number, doneStatus: boolean) => async (
+  dispatch: Dispatch
+) => {
+  
   dispatch({
     type: DONE_TODO,
-    payload: res.data,
+    payload: { id, doneStatus },
   });
+  const res = await axios.post(`${api}/done`, { id, doneStatus });
 };

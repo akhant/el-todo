@@ -6,11 +6,56 @@ body
     height: 100%
 
 .main-page
+  display: flex
+  flex-direction: column
+  justify-content: center
   width: 62%
   margin: 0 auto
   padding: 50px 0
   >div
     margin: 10px 0
-  .list
-    .list__item
-      position: relative
+    &:first-child
+      align-self: center
+
+.list
+  &__item
+    width: 100%
+    height: 100%
+    display: grid
+    grid-gap: 10px
+    grid-template-columns: repeat( 3 , 1fr ) minmax(min-content, min-content)
+    grid-auto-flow: column
+    align-items: center
+    &_text
+      grid-column: 1 / span 3
+      word-wrap: break-word
+      cursor: default
+    &_buttons
+      display: grid
+      grid-auto-flow: column
+      align-items: center
+      grid-column: 4 / span 1
+
+
+.list-with-date
+  &__item
+    width: 100%
+    height: 100%
+    display: grid
+    grid-gap: 10px
+    grid-template-columns: repeat( 3 , 1fr ) minmax(min-content, min-content)
+    grid-auto-flow: column
+    align-items: center
+    &_text
+      grid-column: 1 / span 2
+      word-wrap: break-word
+      cursor: default
+    &_date
+      grid-column: 3 / span 1
+      cursor: default
+    &_buttons
+      display: grid
+      grid-auto-flow: column
+      align-items: center
+      grid-column: 4 / span 1
+   

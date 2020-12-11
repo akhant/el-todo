@@ -7,7 +7,6 @@ router.post('/', async (req: Request, res: Response) => {
 
   const {date} = req.body
 
-  console.log("date",date)
   const query1 = `
     CREATE TABLE IF NOT EXISTS todos (
         id SERIAL,
@@ -22,7 +21,7 @@ router.post('/', async (req: Request, res: Response) => {
   try {
     const resp1 = await db.query(query1);
     const resp2 = await db.query(query2);
-    console.log('db get resp2', resp2.rows);
+    console.log('db get today', resp2.rows);
     res.send(resp2.rows);
   } catch (err) {
     console.log(err);
@@ -36,26 +35,13 @@ router.get('/allnotdone', async (req: Request, res: Response) => {
     `;
   try {
     const resp = await db.query(query);
-    console.log('db get resp2', resp.rows);
+    console.log("db get all not done", resp.rows)
     res.send(resp.rows);
   } catch (err) {
     console.log(err);
   }
 });
 
-router.get('/all', async (req: Request, res: Response) => {
-
-  const query = `
-    SELECT * FROM todos
-    `;
-  try {
-    const resp = await db.query(query);
-    console.log('db get resp2', resp.rows);
-    res.send(resp.rows);
-  } catch (err) {
-    console.log(err);
-  }
-});
 
 router.post('/add', async (req: Request, res: Response) => {
   const { text, date, done } = req.body;
@@ -98,10 +84,10 @@ router.post('/remove', async (req: Request, res: Response) => {
 });
 
 router.post('/done', async (req: Request, res: Response) => {
-  const { id } = req.body;
+  const { id, doneStatus } = req.body;
 
   const query = `
-    UPDATE todos SET done='true' WHERE id='${id}' RETURNING id
+    UPDATE todos SET done='${!doneStatus}' WHERE id='${id}' RETURNING id, done
     `;
   try {
     const resp = await db.query(query);
