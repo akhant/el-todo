@@ -18,16 +18,6 @@ const createWindow = (): void => {
     },
   });
 
-  const serverWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
-    webPreferences: {
-      contextIsolation: false,
-    },
-  });
-
-  serverWindow.loadURL('http://localhost:3005/');
-
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   mainWindow.webContents.openDevTools();
