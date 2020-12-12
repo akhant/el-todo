@@ -21,7 +21,6 @@ router.post('/', async (req: Request, res: Response) => {
   try {
     const resp1 = await db.query(query1);
     const resp2 = await db.query(query2);
-    console.log('db get today', resp2.rows);
     res.send(resp2.rows);
   } catch (err) {
     console.log(err);
@@ -35,7 +34,6 @@ router.get('/allnotdone', async (req: Request, res: Response) => {
     `;
   try {
     const resp = await db.query(query);
-    console.log("db get all not done", resp.rows)
     res.send(resp.rows);
   } catch (err) {
     console.log(err);
@@ -75,7 +73,6 @@ router.post('/remove', async (req: Request, res: Response) => {
     `;
   try {
     const resp = await db.query(query);
-    console.log("resp", resp.rows)
     res.send(resp.rows[0]);
   } catch (err) {
     console.log(err);

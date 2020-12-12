@@ -45,7 +45,6 @@ export const removeTodo = (id: number) => async (dispatch: Dispatch) => {
 export const doneTodo = (id: number, doneStatus: boolean) => async (
   dispatch: Dispatch
 ) => {
-  
   dispatch({
     type: DONE_TODO,
     payload: { id, doneStatus },

@@ -34,12 +34,6 @@ const App = React.memo(
     const [todo, setTodo] = useState('');
     const [date, setDate] = useState(moment());
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
-
-    const updateMainList = () => {
-      console.log('main list');
-      forceUpdate();
-    };
 
     const handleChangeDate = (newDate: any) => {
       setDate(newDate);
@@ -80,7 +74,7 @@ const App = React.memo(
     useEffect(() => {
       getTodos(date.format(DATE_FORMAT));
     }, []);
-    console.log('todayTodos', todayTodos);
+
     return (
       <div className='main-page'>
         <DatePicker
@@ -88,12 +82,17 @@ const App = React.memo(
           defaultValue={moment()}
           onChange={handleChangeDate}
         />
-        <Input
-          placeholder='What will I do?'
-          onPressEnter={handleAddTodo}
-          value={todo}
-          onChange={handleInput}
-        />
+        <div className='main-page__add'>
+          <Input
+            placeholder='What will I do?'
+            onPressEnter={handleAddTodo}
+            value={todo}
+            onChange={handleInput}
+          />
+          <Button onClick={handleAddTodo} className='button_add'>
+            Add
+          </Button>
+        </div>
         <List
           className='list'
           size='large'
@@ -111,7 +110,7 @@ const App = React.memo(
         </Button>
 
         <Modal
-          title='Modal'
+          title='What I still need to do'
           visible={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
@@ -123,10 +122,7 @@ const App = React.memo(
             dataSource={notDoneTodos}
             renderItem={(item) => (
               <List.Item key={item.id}>
-                <CustomListItemWithDate
-                  updateList={updateMainList}
-                  item={item}
-                />
+                <CustomListItemWithDate item={item} />
               </List.Item>
             )}
           />

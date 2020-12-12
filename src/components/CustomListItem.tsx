@@ -9,20 +9,19 @@ export interface ICustomListItemProps {
   item: IDataItem;
   removeTodo: (id: number) => Promise<void>;
   doneTodo: (id: number, doneStatus: boolean) => Promise<void>;
-  done: boolean
+  done: boolean;
 }
 
 const CustomListItem: React.FC<ICustomListItemProps> = ({
   item,
   doneTodo,
   removeTodo,
-  done
+  done,
 }) => {
-
   const [doneStatus, setDoneStatus] = useState(done);
 
   const handleClickDone = () => {
-    setDoneStatus(state => !state);
+    setDoneStatus((state) => !state);
     doneTodo(item.id, doneStatus);
   };
 
@@ -30,11 +29,10 @@ const CustomListItem: React.FC<ICustomListItemProps> = ({
     removeTodo(item.id);
   };
 
-  useEffect(()=>{
-    setDoneStatus(done)
-  }, [done])
+  useEffect(() => {
+    setDoneStatus(done);
+  }, [done]);
 
-  console.log('item', item.text, done);
   return (
     <div className='list__item'>
       <span

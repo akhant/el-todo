@@ -9,21 +9,18 @@ export interface ICustomListItemWithDateProps {
   item: IDataItem;
   removeTodo: (id: number) => Promise<void>;
   doneTodo: (id: number, doneStatus: boolean) => Promise<void>;
-  updateList: () => void;
 }
 
 const CustomListItemWihDate: React.FC<ICustomListItemWithDateProps> = ({
   item,
   doneTodo,
   removeTodo,
-  updateList
 }) => {
   const [doneStatus, setDoneStatus] = useState(item.done);
 
   const handleClickDone = () => {
-    setDoneStatus(state => !state);
+    setDoneStatus((state) => !state);
     doneTodo(item.id, doneStatus);
-    
   };
 
   const handleClickRemove = () => {
@@ -31,18 +28,20 @@ const CustomListItemWihDate: React.FC<ICustomListItemWithDateProps> = ({
   };
   return (
     <div className='list-with-date__item'>
+      <span
+        className='list-with-date__item_text'
+        style={{ textDecoration: doneStatus ? 'line-through' : 'none' }}
+      >
+        {item.text}
+      </span>
+      <span className='list-with-date__item_date'>{item.date}</span>
 
-        <span className="list-with-date__item_text" style={{ textDecoration: doneStatus ? 'line-through' : 'none' }}>
-          {item.text}
-        </span>
-        <span className="list-with-date__item_date">{item.date}</span>
-
-      <div className="list-with-date__item_buttons">
+      <div className='list-with-date__item_buttons'>
         <Button onClick={handleClickDone}>
-          <CheckOutlined style={{color: doneStatus ? '#40a9ff' : 'black'}} />
+          <CheckOutlined style={{ color: doneStatus ? '#40a9ff' : 'black' }} />
         </Button>
         <Button onClick={handleClickRemove}>
-          <CloseOutlined  />
+          <CloseOutlined />
         </Button>
       </div>
     </div>
