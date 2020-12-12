@@ -23,6 +23,7 @@ export interface IAppProps {
   getAllNotDoneTodos: any;
 }
 
+
 const App = React.memo(
   ({
     todayTodos,

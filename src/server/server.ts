@@ -1,25 +1,22 @@
 import { Request, Response } from 'express';
-import dotenv from 'dotenv'
-import cors from 'cors'
-const express = require('express'),
-  path = require('path'),
-  //favicon = require('serve-favicon'),
-  bodyParser = require('body-parser'),
-  routes = require('./routes'),
-  app = express();
+import cors from 'cors';
+import express from 'express';
+//favicon = require('serve-favicon'),
+import bodyParser from 'body-parser';
+import routes from './routes';
 
-
-  dotenv.config()
+const app = express();
 //uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
 
- app.use("/api", routes);
+
+app.use('/api', routes);
 
 app.get('/', (req: Request, res: Response) => {
+  //mainWindow.webContents.send('message', 'hello from the hell');
   res.send('server is ok');
 });
 
@@ -41,4 +38,5 @@ app.get('/', (req: Request, res: Response) => {
 app.listen(3005, () => {
   console.log('listening on 3005');
 });
+
 export default app;

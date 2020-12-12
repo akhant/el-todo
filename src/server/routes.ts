@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
 import db from './db';
+import fs from 'fs';
 
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-
-  const {date} = req.body
+  const { date } = req.body;
 
   const query1 = `
     CREATE TABLE IF NOT EXISTS todos (
@@ -34,12 +34,13 @@ router.get('/allnotdone', async (req: Request, res: Response) => {
     `;
   try {
     const resp = await db.query(query);
+    
     res.send(resp.rows);
   } catch (err) {
     console.log(err);
+    res.send(err);
   }
 });
-
 
 router.post('/add', async (req: Request, res: Response) => {
   const { text, date, done } = req.body;
@@ -53,15 +54,14 @@ router.post('/add', async (req: Request, res: Response) => {
     const resp = await db.query(query);
 
     res.send({
-        text: req.body.text,
-        date: req.body.date,
-        done: false,
-        id: resp.rows[0].id,
-      });
+      text: req.body.text,
+      date: req.body.date,
+      done: false,
+      id: resp.rows[0].id,
+    });
   } catch (err) {
     console.log(err.stack);
   }
-  
 });
 
 router.post('/remove', async (req: Request, res: Response) => {
@@ -77,7 +77,6 @@ router.post('/remove', async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
   }
-  
 });
 
 router.post('/done', async (req: Request, res: Response) => {
@@ -92,7 +91,6 @@ router.post('/done', async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
   }
-  
 });
 
-module.exports = router;
+export default router;
