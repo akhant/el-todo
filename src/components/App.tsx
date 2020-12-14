@@ -46,6 +46,7 @@ const App = React.memo(
     };
 
     const handleAddTodo = () => {
+      if (!todo) return
       const item = {
         text: todo,
         done: false,
@@ -111,7 +112,7 @@ const App = React.memo(
         </Button>
 
         <Modal
-          title='What I still need to do'
+          title={`That's what I still need to do`}
           visible={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
