@@ -5,8 +5,6 @@ import CustomListItem, {
   ICustomListItemProps,
 } from '../components/CustomListItem';
 
-const adapter = new Adapter();
-Enzyme.configure({ adapter });
 
 // let app: ShallowWrapper<ICustomListItemProps, undefined>;
 
