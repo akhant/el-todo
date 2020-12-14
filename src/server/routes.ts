@@ -23,7 +23,8 @@ router.post('/', async (req: Request, res: Response) => {
     const resp2 = await db.query(query2);
     res.send(resp2.rows);
   } catch (err) {
-    console.log(err);
+    fs.appendFileSync("errors.txt", `${new Date()} \n ${err} \n --------------------------------------------------- \n`)
+    res.send(err)
   }
 });
 
@@ -37,7 +38,7 @@ router.get('/allnotdone', async (req: Request, res: Response) => {
     
     res.send(resp.rows);
   } catch (err) {
-    console.log(err);
+    fs.appendFileSync("errors.txt", `${new Date()} \n ${err} \n --------------------------------------------------- \n`)
     res.send(err);
   }
 });
@@ -60,7 +61,8 @@ router.post('/add', async (req: Request, res: Response) => {
       id: resp.rows[0].id,
     });
   } catch (err) {
-    console.log(err.stack);
+    fs.appendFileSync("errors.txt", `${new Date()} \n ${err} \n --------------------------------------------------- \n`)
+    res.send(err)
   }
 });
 
@@ -75,7 +77,8 @@ router.post('/remove', async (req: Request, res: Response) => {
     const resp = await db.query(query);
     res.send(resp.rows[0]);
   } catch (err) {
-    console.log(err);
+    fs.appendFileSync("errors.txt", `${new Date()} \n ${err} \n --------------------------------------------------- \n`)
+    res.send(err)
   }
 });
 
@@ -89,7 +92,8 @@ router.post('/done', async (req: Request, res: Response) => {
     const resp = await db.query(query);
     res.send(resp.rows[0]);
   } catch (err) {
-    console.log(err);
+    fs.appendFileSync("errors.txt", `${new Date()} \n ${err} \n --------------------------------------------------- \n`)
+    res.send(err)
   }
 });
 
