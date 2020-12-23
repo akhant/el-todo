@@ -1,27 +1,43 @@
 import * as React from 'react';
-import { ShallowWrapper, shallow, HTMLAttributes } from 'enzyme';
-import CustomListItem, {
-  ICustomListItemProps,
-} from '../components/CustomListItem';
+import { ShallowWrapper, mount, HTMLAttributes } from 'enzyme';
+import { CustomListItem } from '../components/CustomListItem';
 
-// let app: ShallowWrapper<ICustomListItemProps, undefined>;
+describe('intaractive elements', () => {
+  let mockItem = {
+    done: false,
+    text: 'aaa',
+    date: '234234',
+    id: 1,
+  };
+  let wrapper: any;
+  let mockRemoveTodo: any = jest.fn();
+  let mockDoneTodo: any = jest.fn();
 
-// beforeEach(
-//   () =>
-//     (app = shallow(
-//       <CustomListItem
-//         done={false}
-//         item={{ text: 'asdf', done: false, id: 1, date: 'adfasdf' }}
-//       />
-//     ))
-// );
+  beforeEach(() => {
+    mockRemoveTodo.mockClear();
+    mockDoneTodo.mockClear();
 
-// checking that all is fine and component has been rendered
-//it('should render without error', () => expect(app.length).toBe(1));
+    wrapper = mount(
+      <CustomListItem
+        item={mockItem}
+        doneTodo={mockDoneTodo}
+        removeTodo={mockRemoveTodo}
+      />
+    );
+  });
+  afterEach(() => {
+    wrapper.unmount();
+  });
 
-it('should work', () => {
-//   const pNodes: ShallowWrapper<HTMLAttributes, undefined> = app.find('div');
+  it('remove btn click', () => {
+    wrapper.find('.list__item_remove-btn').hostNodes().simulate('click');
 
-//   expect(pNodes.length).toBe(1);
-expect(1).toBe(1)
+    expect(mockRemoveTodo).toHaveBeenCalled();
+  });
+
+  it('done btn click', () => {
+    wrapper.find('.list__item_done-btn').hostNodes().simulate('click');
+
+    expect(mockDoneTodo).toHaveBeenCalled();
+  });
 });

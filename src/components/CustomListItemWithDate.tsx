@@ -48,4 +48,5 @@ const CustomListItemWihDate: React.FC<ICustomListItemWithDateProps> = ({
   );
 };
 
+//@ts-ignore
 export default connect(null, { removeTodo, doneTodo })(CustomListItemWihDate);

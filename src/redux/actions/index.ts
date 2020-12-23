@@ -9,7 +9,7 @@ const api = 'http://localhost:3005/api';
 export const addTodo = (item: IDataItem) => async (dispatch: Dispatch) => {
   const res = await axios.post(`${api}/add`, item);
 
-  dispatch({
+  return dispatch({
     type: ADD_TODO,
     payload: res.data,
   });
@@ -18,7 +18,7 @@ export const addTodo = (item: IDataItem) => async (dispatch: Dispatch) => {
 export const getTodos = (date: string) => async (dispatch: Dispatch) => {
   const res = await axios.post(`${api}/`, { date });
 
-  dispatch({
+  return dispatch({
     type: GET_TODOS,
     payload: res.data,
   });
@@ -27,7 +27,7 @@ export const getTodos = (date: string) => async (dispatch: Dispatch) => {
 export const getAllNotDoneTodos = () => async (dispatch: Dispatch) => {
   const res = await axios.get(`${api}/allnotdone`);
 
-  dispatch({
+  return dispatch({
     type: GET_ALL_NOT_DONE_TODOS,
     payload: res.data,
   });
@@ -36,7 +36,7 @@ export const getAllNotDoneTodos = () => async (dispatch: Dispatch) => {
 export const removeTodo = (id: number) => async (dispatch: Dispatch) => {
   const res = await axios.post(`${api}/remove`, { id });
 
-  dispatch({
+  return dispatch({
     type: REMOVE_TODO,
     payload: res.data,
   });
@@ -45,9 +45,9 @@ export const removeTodo = (id: number) => async (dispatch: Dispatch) => {
 export const doneTodo = (id: number, doneStatus: boolean) => async (
   dispatch: Dispatch
 ) => {
-  dispatch({
+  const res = await axios.post(`${api}/done`, { id, doneStatus });
+  return dispatch({
     type: DONE_TODO,
     payload: { id, doneStatus },
   });
-  const res = await axios.post(`${api}/done`, { id, doneStatus });
 };

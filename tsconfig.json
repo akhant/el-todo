@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "target": "es6",
     "module": "commonjs",
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -10,13 +11,8 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "paths": {
-      "*": ["node_modules/*"]
-    },
     "jsx": "react",
   },
-  "include": [
-    "src/**/*"
-  ],
+
   "exclude": ["node_modules"]
 }

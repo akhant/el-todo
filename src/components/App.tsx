@@ -16,123 +16,121 @@ export interface IDataItem {
 }
 
 export interface IAppProps {
-  todayTodos: IDataItem[];
-  notDoneTodos: IDataItem[];
-  addTodo: any;
-  getTodos: any;
-  getAllNotDoneTodos: any;
+  todayTodos?: IDataItem[];
+  notDoneTodos?: IDataItem[];
+  addTodo?: any;
+  getTodos?: any;
+  getAllNotDoneTodos?: any;
 }
 
+export const App = ({
+  todayTodos,
+  notDoneTodos,
+  addTodo,
+  getTodos,
+  getAllNotDoneTodos,
+}: IAppProps) => {
+  const [todo, setTodo] = React.useState('');
+  const [date, setDate] = React.useState(moment());
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
 
-const App = React.memo(
-  ({
-    todayTodos,
-    notDoneTodos,
-    addTodo,
-    getTodos,
-    getAllNotDoneTodos,
-  }: IAppProps) => {
-    const [todo, setTodo] = useState('');
-    const [date, setDate] = useState(moment());
-    const [isModalVisible, setIsModalVisible] = useState(false);
+  const handleChangeDate = (newDate: any) => {
+    setDate(newDate);
+    getTodos(newDate.format(DATE_FORMAT));
+  };
 
-    const handleChangeDate = (newDate: any) => {
-      setDate(newDate);
-      getTodos(newDate.format(DATE_FORMAT));
+  const handleInput = (e: any) => {
+    setTodo(e.target.value);
+  };
+
+  const handleAddTodo = () => {
+    if (!todo) return;
+    const item = {
+      text: todo,
+      done: false,
+      date: date.format(DATE_FORMAT),
     };
+    addTodo(item);
+    setTodo('');
+  };
 
-    const handleInput = (e: any) => {
-      setTodo(e.target.value);
-    };
+  const handleGetAllNotDoneTodos = () => {
+    getAllNotDoneTodos();
+    showModal();
+  };
 
-    const handleAddTodo = () => {
-      if (!todo) return
-      const item = {
-        text: todo,
-        done: false,
-        date: date.format(DATE_FORMAT),
-      };
-      addTodo(item);
-      setTodo('');
-    };
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
 
-    const handleGetAllNotDoneTodos = () => {
-      getAllNotDoneTodos();
-      showModal();
-    };
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
 
-    const showModal = () => {
-      setIsModalVisible(true);
-    };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
-    const handleOk = () => {
-      setIsModalVisible(false);
-    };
+  useEffect(() => {
+    getTodos(date.format(DATE_FORMAT));
+  }, []);
 
-    const handleCancel = () => {
-      setIsModalVisible(false);
-    };
-
-    useEffect(() => {
-      getTodos(date.format(DATE_FORMAT));
-    }, []);
-
-    return (
-      <div className='main-page'>
-        <DatePicker
-          value={date}
-          defaultValue={moment()}
-          onChange={handleChangeDate}
+  return (
+    <div className='main-page'>
+      <DatePicker
+        value={date}
+        defaultValue={moment()}
+        onChange={handleChangeDate}
+      />
+      <div className='add'>
+        <Input
+          className='add__input'
+          placeholder='What will I do?'
+          onPressEnter={handleAddTodo}
+          value={todo}
+          onChange={handleInput}
         />
-        <div className='main-page__add'>
-          <Input
-            placeholder='What will I do?'
-            onPressEnter={handleAddTodo}
-            value={todo}
-            onChange={handleInput}
-          />
-          <Button onClick={handleAddTodo} className='button_add'>
-            Add
-          </Button>
-        </div>
+        <Button onClick={handleAddTodo} className='add__button'>
+          Add
+        </Button>
+      </div>
+      <List
+        className='list'
+        size='large'
+        bordered
+        dataSource={todayTodos}
+        renderItem={(item) => (
+          <List.Item key={item.id}>
+            <CustomListItem done={item.done} item={item} />
+          </List.Item>
+        )}
+      />
+
+      <Button className='button_get-all' onClick={handleGetAllNotDoneTodos}>
+        Show all haven't done todos
+      </Button>
+
+      <Modal
+        title={`That's what I still need to do`}
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
         <List
-          className='list'
+          className='list-with-date'
           size='large'
           bordered
-          dataSource={todayTodos}
+          dataSource={notDoneTodos}
           renderItem={(item) => (
             <List.Item key={item.id}>
-              <CustomListItem done={item.done} item={item} />
+              <CustomListItemWithDate item={item} />
             </List.Item>
           )}
         />
-
-        <Button className='button_get-all' onClick={handleGetAllNotDoneTodos}>
-          Show all haven't done todos
-        </Button>
-
-        <Modal
-          title={`That's what I still need to do`}
-          visible={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          <List
-            className='list-with-date'
-            size='large'
-            bordered
-            dataSource={notDoneTodos}
-            renderItem={(item) => (
-              <List.Item key={item.id}>
-                <CustomListItemWithDate item={item} />
-              </List.Item>
-            )}
-          />
-        </Modal>
-      </div>
-    );
-  }
-);
+      </Modal>
+    </div>
+  );
+};
 
 export default connect(
   ({ todayTodos, notDoneTodos }: RootState) => ({ todayTodos, notDoneTodos }),
