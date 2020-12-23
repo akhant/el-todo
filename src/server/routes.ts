@@ -1,3 +1,4 @@
+import { languageData } from './../redux/const';
 import { commaShilding } from './../utils/index';
 import express, { Request, Response } from 'express';
 import db from './db';
@@ -123,6 +124,14 @@ router.post('/done', async (req: Request, res: Response) => {
     );
     res.send(err);
   }
+});
+
+router.post('/lang', async (req: Request, res: Response) => {
+  const { lang } = req.body;
+
+  //@ts-ignore
+  const langObj = languageData[lang];
+  res.send(langObj);
 });
 
 export default router;

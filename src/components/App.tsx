@@ -3,10 +3,11 @@ import { DatePicker, Input, Button, List, Modal } from 'antd';
 import moment from 'moment';
 import { addTodo, getTodos, getAllNotDoneTodos } from '../redux/actions';
 import { connect } from 'react-redux';
-import { DATE_FORMAT } from '../redux/const';
+import { DATE_FORMAT, ILangTextList } from '../redux/const';
 import CustomListItemWithDate from './CustomListItemWithDate';
 import CustomListItem from './CustomListItem';
 import { RootState } from '../redux/reducers';
+import LanguagePicker from './LanguagePicker';
 
 export interface IDataItem {
   text: string;
@@ -21,6 +22,7 @@ export interface IAppProps {
   addTodo?: any;
   getTodos?: any;
   getAllNotDoneTodos?: any;
+  langData?: ILangTextList;
 }
 
 export const App = ({
@@ -28,6 +30,7 @@ export const App = ({
   notDoneTodos,
   addTodo,
   getTodos,
+  langData,
   getAllNotDoneTodos,
 }: IAppProps) => {
   const [todo, setTodo] = React.useState('');
@@ -77,6 +80,7 @@ export const App = ({
 
   return (
     <div className='main-page'>
+      <LanguagePicker />
       <DatePicker
         value={date}
         defaultValue={moment()}
@@ -85,13 +89,13 @@ export const App = ({
       <div className='add'>
         <Input
           className='add__input'
-          placeholder='What will I do?'
+          placeholder={langData.placeholder}
           onPressEnter={handleAddTodo}
           value={todo}
           onChange={handleInput}
         />
         <Button onClick={handleAddTodo} className='add__button'>
-          Add
+          {langData.addBtnText}
         </Button>
       </div>
       <List
@@ -107,14 +111,16 @@ export const App = ({
       />
 
       <Button className='button_get-all' onClick={handleGetAllNotDoneTodos}>
-        Show all haven't done todos
+        {langData.showAll}
       </Button>
 
       <Modal
-        title={`That's what I still need to do`}
+        title={langData.modalTitle}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        cancelText={langData.cancelBtnText}
+        okText={langData.okBtnText}
       >
         <List
           className='list-with-date'
@@ -133,6 +139,10 @@ export const App = ({
 };
 
 export default connect(
-  ({ todayTodos, notDoneTodos }: RootState) => ({ todayTodos, notDoneTodos }),
+  ({ todayTodos, notDoneTodos, langData }: RootState) => ({
+    langData,
+    todayTodos,
+    notDoneTodos,
+  }),
   { getTodos, addTodo, getAllNotDoneTodos }
 )(App);

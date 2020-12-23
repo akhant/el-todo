@@ -16,6 +16,7 @@ export const initialStateTodos: IDataItem[] = [
 const initialRootReducer: RootState = {
   todayTodos: initialStateTodos,
   notDoneTodos: initialStateTodos.slice(0, 2),
+  langData: {},
 };
 
 describe('moxios tests', () => {

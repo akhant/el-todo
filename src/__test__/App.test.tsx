@@ -12,6 +12,7 @@ let wrapper: any;
 const initialRootReducer: RootState = {
   todayTodos: [],
   notDoneTodos: [],
+  langData: {},
 };
 
 describe('Components are rendering', () => {

@@ -1,4 +1,4 @@
-import { GET_TODOS, GET_ALL_NOT_DONE_TODOS } from './../const';
+import { GET_TODOS, GET_ALL_NOT_DONE_TODOS, SET_LANG } from './../const';
 import { IDataItem } from './../../components/App';
 import { Dispatch } from 'redux';
 import { ADD_TODO, REMOVE_TODO, DONE_TODO } from '../const';
@@ -49,5 +49,13 @@ export const doneTodo = (id: number, doneStatus: boolean) => async (
   return dispatch({
     type: DONE_TODO,
     payload: { id, doneStatus },
+  });
+};
+
+export const getLang = (lang: string) => async (dispatch: Dispatch) => {
+  const res = await axios.post(`${api}/lang`, { lang });
+  return dispatch({
+    type: SET_LANG,
+    payload: res.data,
   });
 };
