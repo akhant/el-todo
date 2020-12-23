@@ -16,7 +16,11 @@ export interface ILangTextList {
   okBtnText: string;
 }
 
-export const languageData = {
+export interface ILangData {
+  [lang: string]: ILangTextList;
+}
+
+export const languageData: ILangData = {
   en: {
     addBtnText: 'Add',
     placeholder: 'What will I do?',

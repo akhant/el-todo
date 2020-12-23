@@ -1,9 +1,10 @@
 import { IDataItem } from './../components/App';
-import { addTodo, removeTodo } from './../redux/actions/index';
+import { addTodo, removeTodo, getLang } from './../redux/actions/index';
 import * as React from 'react';
 import { storeFactory } from '../utils';
 import { RootState } from '../redux/reducers';
 import moxios from 'moxios';
+import { languageData } from '../redux/const';
 
 let store: any;
 
@@ -75,6 +76,28 @@ describe('moxios tests', () => {
 
           // length less by 1 then initialState
           expect(newState.todayTodos.length).toBe(initialStateTodos.length - 1);
+          done();
+        });
+    });
+  });
+
+  it('action getLang', (done) => {
+    let lang = 'en';
+
+    store.dispatch(getLang(lang));
+
+    moxios.wait(() => {
+      let request = moxios.requests.mostRecent();
+
+      request
+        .respondWith({
+          status: 200,
+          response: languageData[lang],
+        })
+        .then((res) => {
+          const newState = store.getState();
+
+          expect(newState.langData).toEqual(res.data);
           done();
         });
     });
