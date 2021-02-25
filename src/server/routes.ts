@@ -1,5 +1,4 @@
 import { languageData } from './../redux/const';
-import { commaShilding } from './../utils/index';
 import express, { Request, Response } from 'express';
 import db from './db';
 import fs from 'fs';
@@ -18,12 +17,12 @@ router.post('/', async (req: Request, res: Response) => {
     )
     `;
   const query2 = `
-    SELECT * FROM todos WHERE date='${date}'
+    SELECT * FROM todos WHERE date=$1
     `;
 
   try {
     await db.query(query1);
-    const resp2 = await db.query(query2);
+    const resp2 = await db.query(query2, [date]);
     res.send(resp2.rows);
   } catch (err) {
     fs.appendFileSync(
@@ -55,23 +54,19 @@ router.get('/allnotdone', async (req: Request, res: Response) => {
 router.post('/add', async (req: Request, res: Response) => {
   const { text, date, done } = req.body;
 
-  const qText = commaShilding(text);
-  const qDate = commaShilding(date);
-  const qDone = commaShilding(done);
-
   const query = `
     INSERT INTO todos ( id, text, date, done )
-    VALUES (DEFAULT, '${qText}', '${qDate}', '${qDone}') 
+    VALUES (DEFAULT, $1, $2, $3) 
     RETURNING id;
     `;
 
   try {
-    const resp = await db.query(query);
+    const resp = await db.query(query, [text, date, done]);
 
     res.send({
-      text: req.body.text,
-      date: req.body.date,
-      done: false,
+      text,
+      date,
+      done,
       id: resp.rows[0].id,
     });
   } catch (err) {
@@ -85,15 +80,14 @@ router.post('/add', async (req: Request, res: Response) => {
 
 router.post('/remove', async (req: Request, res: Response) => {
   const { id } = req.body;
-  const qId = commaShilding(id);
 
   const query = `
     DELETE FROM todos 
-    WHERE id='${qId}' RETURNING id
+    WHERE id=$1 RETURNING id
     `;
 
   try {
-    const resp = await db.query(query);
+    const resp = await db.query(query, [id]);
     res.send(resp.rows[0]);
   } catch (err) {
     fs.appendFileSync(
@@ -109,12 +103,12 @@ router.post('/done', async (req: Request, res: Response) => {
 
   const query = `
     UPDATE todos
-    SET done = '${doneStatus}'
-    WHERE id = '${id}'
+    SET done = $1
+    WHERE id = $2
     RETURNING id, done, text
     `;
   try {
-    const resp = await db.query(query);
+    const resp = await db.query(query, [doneStatus, id]);
     res.send(resp.rows[0]);
   } catch (err) {
     fs.appendFileSync(
