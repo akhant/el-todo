@@ -9,8 +9,6 @@ const router = express.Router();
 router.post('/', async (req: Request, res: Response) => {
   const { date } = req.body;
 
-  const qDate = commaShilding(date);
-
   const query1 = `
     CREATE TABLE IF NOT EXISTS todos (
         id SERIAL,
@@ -20,11 +18,11 @@ router.post('/', async (req: Request, res: Response) => {
     )
     `;
   const query2 = `
-    SELECT * FROM todos WHERE date='${qDate}'
+    SELECT * FROM todos WHERE date='${date}'
     `;
 
   try {
-    const resp1 = await db.query(query1);
+    await db.query(query1);
     const resp2 = await db.query(query2);
     res.send(resp2.rows);
   } catch (err) {
@@ -108,11 +106,12 @@ router.post('/remove', async (req: Request, res: Response) => {
 
 router.post('/done', async (req: Request, res: Response) => {
   const { id, doneStatus } = req.body;
-  const qId = commaShilding(id);
-  const qdoneStatus = commaShilding(doneStatus);
 
   const query = `
-    UPDATE todos SET done='${!qdoneStatus}' WHERE id='${qId}' RETURNING id, done
+    UPDATE todos
+    SET done = '${doneStatus}'
+    WHERE id = '${id}'
+    RETURNING id, done, text
     `;
   try {
     const resp = await db.query(query);

@@ -93,3 +93,4 @@ out/
 
 errors.txt
 dist/
+src/server/secret.ts
