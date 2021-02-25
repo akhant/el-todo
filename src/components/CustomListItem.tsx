@@ -17,7 +17,7 @@ export const CustomListItem: React.FC<ICustomListItemProps> = ({
     console.log('done before', doneStatus, '->', !doneStatus);
     doneTodo(item.id, !doneStatus);
 
-    setDoneStatus((state) => !state);
+    //setDoneStatus((state) => !state);
   };
 
   const handleClickRemove = () => {

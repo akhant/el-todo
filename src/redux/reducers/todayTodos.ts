@@ -18,7 +18,7 @@ export default (state: IDataItem[] = [], { type, payload }: AnyAction) => {
     case DONE_TODO:
       return state.map((item) => {
         if (item.id === payload.id) {
-          item.done = !payload.doneStatus;
+          item.done = payload.doneStatus;
         }
         return item;
       });
