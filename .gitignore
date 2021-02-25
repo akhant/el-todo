@@ -93,4 +93,4 @@ out/
 
 errors.txt
 dist/
-src/server/secret.ts
+src/server/db/secret.ts
