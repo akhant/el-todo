@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { IDataItem } from './App';
 import { Button } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { removeTodo, doneTodo } from '../redux/actions';
-
-export interface ICustomListItemProps {
-  item?: IDataItem;
-  removeTodo: any;
-  doneTodo: any;
-  done?: boolean;
-}
+import { ICustomListItemProps } from 'src/interfaces';
 
 export const CustomListItem: React.FC<ICustomListItemProps> = ({
   item,
@@ -19,10 +12,12 @@ export const CustomListItem: React.FC<ICustomListItemProps> = ({
   done,
 }) => {
   const [doneStatus, setDoneStatus] = useState(done);
-
+  console.log('item', item);
   const handleClickDone = () => {
+    console.log('done before', doneStatus, '->', !doneStatus);
+    doneTodo(item.id, !doneStatus);
+
     setDoneStatus((state) => !state);
-    doneTodo(item.id, doneStatus);
   };
 
   const handleClickRemove = () => {

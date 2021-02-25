@@ -1,5 +1,5 @@
+import { IDataItem } from './../../interfaces/index';
 import { GET_TODOS, GET_ALL_NOT_DONE_TODOS, SET_LANG } from './../const';
-import { IDataItem } from './../../components/App';
 import { Dispatch } from 'redux';
 import { ADD_TODO, REMOVE_TODO, DONE_TODO } from '../const';
 import axios from 'axios';
@@ -48,7 +48,7 @@ export const doneTodo = (id: number, doneStatus: boolean) => async (
   const res = await axios.post(`${api}/done`, { id, doneStatus });
   return dispatch({
     type: DONE_TODO,
-    payload: { id, doneStatus },
+    payload: { id, doneStatus: res.data.done },
   });
 };
 

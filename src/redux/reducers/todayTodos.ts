@@ -1,5 +1,5 @@
+import { IDataItem } from './../../interfaces/index';
 import { GET_TODOS } from './../const';
-import { IDataItem } from '../../components/App';
 import { AnyAction } from 'redux';
 import { ADD_TODO, DONE_TODO, REMOVE_TODO } from '../const';
 

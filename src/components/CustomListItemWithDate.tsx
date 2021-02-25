@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
-import { IDataItem } from './App';
 import { Button } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { removeTodo, doneTodo } from '../redux/actions';
-
-export interface ICustomListItemWithDateProps {
-  item: IDataItem;
-  removeTodo: (id: number) => Promise<void>;
-  doneTodo: (id: number, doneStatus: boolean) => Promise<void>;
-}
+import { ICustomListItemWithDateProps } from 'src/interfaces';
 
 const CustomListItemWihDate: React.FC<ICustomListItemWithDateProps> = ({
   item,
@@ -19,8 +13,8 @@ const CustomListItemWihDate: React.FC<ICustomListItemWithDateProps> = ({
   const [doneStatus, setDoneStatus] = useState(item.done);
 
   const handleClickDone = () => {
-    setDoneStatus((state) => !state);
-    doneTodo(item.id, doneStatus);
+    doneTodo(item.id, !doneStatus);
+    setDoneStatus((state: boolean) => !state);
   };
 
   const handleClickRemove = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, shallow, mount } from 'enzyme';
-import ConnectedApp, { IAppProps, App } from '../components/App';
+import ConnectedApp, { App } from '../components/App';
 import { storeFactory } from '../utils';
 import { Provider } from 'react-redux';
 import { RootState } from '../redux/reducers';

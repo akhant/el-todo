@@ -3,27 +3,12 @@ import { DatePicker, Input, Button, List, Modal } from 'antd';
 import moment from 'moment';
 import { addTodo, getTodos, getAllNotDoneTodos } from '../redux/actions';
 import { connect } from 'react-redux';
-import { DATE_FORMAT, ILangTextList } from '../redux/const';
+import { DATE_FORMAT } from '../redux/const';
 import CustomListItemWithDate from './CustomListItemWithDate';
 import CustomListItem from './CustomListItem';
 import { RootState } from '../redux/reducers';
 import LanguagePicker from './LanguagePicker';
-
-export interface IDataItem {
-  text: string;
-  done: boolean;
-  date: string;
-  id?: number;
-}
-
-export interface IAppProps {
-  todayTodos?: IDataItem[];
-  notDoneTodos?: IDataItem[];
-  addTodo?: any;
-  getTodos?: any;
-  getAllNotDoneTodos?: any;
-  langData?: ILangTextList;
-}
+import { IAppProps } from 'src/interfaces';
 
 export const App = ({
   todayTodos,

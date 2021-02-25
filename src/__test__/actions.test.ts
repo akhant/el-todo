@@ -1,4 +1,4 @@
-import { IDataItem } from './../components/App';
+import { IDataItem } from './../interfaces/index';
 import { addTodo, removeTodo, getLang } from './../redux/actions/index';
 import * as React from 'react';
 import { storeFactory } from '../utils';
